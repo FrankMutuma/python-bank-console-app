@@ -1,3 +1,67 @@
+import os
+
+#method create account
+def createaccount():
+	name=input("Enter your name: ")
+	id_no=input("Enter your id number: ")
+	import random
+	accno=random.randint(1000000,99999999)
+	users[accno]={"Name":name,"Idnumber":id_no, "DepositAmount":0.0,"LoanAmount":0.0}
+	print(f"Hello {name} your Account Number is: {accno}")
+	input("Press any Enter key to continue...")
+	os.system('clear')
+	
+#method Login
+def login():
+		search_str=input("Enter your (Account or Id) number to login:  ")
+		#print(accounts)
+		user_accno = next((accno for accno,details in users.items() if details.get("Idnumber") == search_str),search_str if search_str in users else None)
+		if user_accno:
+			os.system("clear")
+			account(user_accno)
+		else:
+			input(f"{search_str} not found...press any key to continue..")
+			os.system("clear")
+			
+			
+#method deposit
+def deposit(acc_no):
+	amount=input(f"welcome {users[acc_no]['Name']}\n Your account balance is : ksh {users[acc_no]['DepositAmount']}\n Enter the amount to Deposit: ")
+	users[acc_no]['DepositAmount']=str(float(users[acc_no]['DepositAmount'])+float(amount))
+	print(f"Deposit of Ksh. {amount} succesfull your account balance is Ksh. {users[acc_no]['DepositAmount']}\n")
+	input("Press any Enter key to continue...")
+	os.system('clear')
+	account(acc_no)
+	
+#method withdraw
+def withdraw(acc_no):
+	amount=float(input(f"welcome {users[acc_no]['Name']}\n Your account balance is : ksh {users[acc_no]['DepositAmount']}\n Enter the amount to Withdraw: "))
+	if amount<float(users[acc_no]['DepositAmount'])+2.0 :
+		users[acc_no]['DepositAmount']=str(float(users[acc_no]['DepositAmount'])-amount-2)
+		print(f"Withdrawal of Ksh. {amount} succesfull your account balance is Ksh. {users[acc_no]['DepositAmount']}, transaction cost Ksh. 2.00\n")
+		input("Press any key to continue...")
+	else:
+		print("Insufficient balance to withdraw ksh. {amount}, kindly topup, \nyou can borrow with us today to purchase without interuptions.")
+	os.system('clear')
+	account(acc_no)
+	
+#repay method
+def repay(acc_no):
+	amount=float(input(f"\nYour outstanding loan balance is : ksh {users[acc_no]['LoanAmount']}\n Enter the amount to repay: "))
+	if amount>float(users[acc_no]['LoanAmount']) :
+		amount=float(users[acc_no]['LoanAmount'])
+	if amount>float(users[acc_no]['DepositAmount']):
+		print(f"\n\nInsufficient balance to Repay ksh. {amount}, kindly topup yo enjoy our services\n")
+		input("\nPress any Enter key to continue...")
+		os.system('clear')
+		account(acc_no)
+	users[acc_no]['DepositAmount']=str(float(users[acc_no]['DepositAmount'])-amount)
+	users[acc_no]['LoanAmount']=str(float(users[acc_no]['LoanAmount'])-amount)
+	print(f"\n\nYour loan repayment request of Ksh. {amount} is succesfull. your loan balance is Ksh. {users[acc_no]['LoanAmount']}, transaction cost Ksh. 0.00\n")
+	input("\nPress any Enter key to continue...")
+	os.system('clear')
+	account(acc_no)
+
 #method borrow
 def borrow(acc_no):
 	print("borrow")
